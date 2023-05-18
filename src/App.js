@@ -1,48 +1,54 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'redux';
-import { incrementScore, setCurrentQuestion, setShowScore } from './actions';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { incrementScore, setCurrentQuestion, setShowScore } from "./actions";
 
 export default function App() {
-	const questions = useSelector(state => state.questions);
-	const currentQuestion = useSelector(state => state.currentQuestion);
-	const showScore = useSelector(state => state.showScore);
-	const score = useSelector(state => state.score);
-	const dispatch = useDispatch();
-	
-	const handleAnswerOptionClick = (isCorrect) => {
-		if (isCorrect) {
-			dispatch(incrementScore());
-		}
+  const questions = useSelector((state) => state.questions);
+  const currentQuestion = useSelector((state) => state.currentQuestion);
+  const showScore = useSelector((state) => state.showScore);
+  const score = useSelector((state) => state.score);
+  const dispatch = useDispatch();
 
-		const nextQuestion = currentQuestion + 1;
-		if (nextQuestion < questions.length) {
-			dispatch(setCurrentQuestion(nextQuestion));
-		} else {
-			dispatch(setShowScore(true));
-		}
-	};
+  const handleAnswerOptionClick = (isCorrect) => {
+    if (isCorrect) {
+      dispatch(incrementScore());
+    }
 
-	return (
-		<div className='app'>
-			{showScore ? (
-				<div className='score-section'>
-					You scored {score} out of {questions.length}
-				</div>
-			) : (
-				<>
-					<div className='question-section'>
-						<div className='question-count'>
-							<span>Question {currentQuestion + 1}</span>/{questions.length}
-						</div>
-						<div className='question-text'>{questions[currentQuestion].questionText}</div>
-					</div>
-					<div className='answer-section'>
-						{questions[currentQuestion].answerOptions.map((answerOption) => (
-							<button onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}>{answerOption.answerText}</button>
-						))}
-					</div>
-				</>
-			)}
-		</div>
-	);
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      dispatch(setCurrentQuestion(nextQuestion));
+    } else {
+      dispatch(setShowScore(true));
+    }
+  };
+
+  return (
+    <div className="app">
+      {showScore ? (
+        <div className="score-section">
+          You scored {score} out of {questions.length}
+        </div>
+      ) : (
+        <>
+          <div className="question-section">
+            <div className="question-count">
+              <span>Question {currentQuestion + 1}</span>/{questions.length}
+            </div>
+            <div className="question-text">
+              {questions[currentQuestion].questionText}
+            </div>
+          </div>
+          <div className="answer-section">
+            {questions[currentQuestion].answerOptions.map((answerOption) => (
+              <button
+                onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}
+              >
+                {answerOption.answerText}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
